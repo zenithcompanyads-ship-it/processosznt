@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zenith · Central de Relatórios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;450;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --white:#FFFFFF;
+    --off:#FBFBFD;
+    --black:#0A0A0A;
+    --ink:#1D1D1F;
+    --ink-soft:#6E6E73;
+    --ink-mute:#A1A1A6;
+    --line:#E5E5E7;
+    --line-soft:#F0F0F2;
+    --surface:#F5F5F7;
+    --radius:18px;
+    --radius-sm:10px;
+    --sans:'Inter',-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,'SF Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--white);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    overflow-x:hidden;
+    width:100%;
+  }
+  ::selection{background:var(--ink);color:var(--white)}
+  a{color:inherit}
+  img,svg{max-width:100%}
+
+  /* ===== SHELL: sidebar + content ===== */
+  .shell{
+    display:flex;
+    align-items:flex-start;
+  }
+
+  /* ---- Sidebar (tree nav) ---- */
+  .sidebar{
+    position:sticky;top:0;
+    height:100vh;
+    width:248px;flex-shrink:0;
+    border-right:1px solid var(--line-soft);
+    padding:22px 14px 24px 20px;
+    overflow-y:auto;
+    scrollbar-width:thin;
+  }
+  .sidebar::-webkit-scrollbar{width:6px}
+  .sidebar::-webkit-scrollbar-thumb{background:var(--line);border-radius:6px}
+  .sb-brand{
+    display:flex;align-items:center;gap:8px;
+    font-weight:700;font-size:14.5px;letter-spacing:-.01em;
+    padding:6px 8px 18px;
+  }
+  .sb-brand svg{width:16px;height:16px;flex-shrink:0}
+  .tree{list-style:none}
+  .tree-group{margin-bottom:4px}
+  .tree-top{
+    display:flex;align-items:center;gap:7px;
+    width:100%;background:none;border:none;cursor:pointer;
+    font-family:var(--sans);font-size:13px;font-weight:600;
+    color:var(--ink);padding:8px 8px;border-radius:8px;
+    text-align:left;letter-spacing:-.01em;
+  }
+  .tree-top:hover{background:var(--off)}
+  .tree-top .chev{
+    width:9px;height:9px;flex-shrink:0;
+    transition:transform .22s ease;
+    color:var(--ink-mute);
+  }
+  .tree-group.open .tree-top .chev{transform:rotate(90deg)}
+  .tree-kids{
+    list-style:none;
+    margin-left:21px;
+    padding-left:11px;
+    border-left:1px solid var(--line);
+    max-height:0;overflow:hidden;
+    transition:max-height .28s ease;
+  }
+  .tree-group.open .tree-kids{max-height:600px}
+  .tree-kids li a{
+    display:block;
+    font-size:12.5px;color:var(--ink-soft);
+    text-decoration:none;
+    padding:6.5px 10px;border-radius:7px;
+    margin:1px 0;
+    white-space:normal;line-height:1.35;
+    transition:.15s;
+  }
+  .tree-kids li a:hover{color:var(--ink);background:var(--off)}
+  .tree-kids li a.active{color:var(--white);background:var(--black)}
+  .sb-foot{
+    margin-top:18px;padding-top:14px;
+    border-top:1px solid var(--line-soft);
+    font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);
+    padding-left:8px;line-height:1.6;
+  }
+
+  /* mobile topbar (shown <900px) */
+  .topbar{
+    display:none;
+    position:sticky;top:0;z-index:60;
+    background:rgba(255,255,255,.85);
+    backdrop-filter:blur(20px) saturate(180%);
+    -webkit-backdrop-filter:blur(20px) saturate(180%);
+    border-bottom:1px solid var(--line-soft);
+    align-items:center;gap:12px;
+    padding:0 18px;height:52px;
+  }
+  .topbar .sb-brand{padding:0;flex:1}
+  .menu-toggle{
+    background:none;border:1px solid var(--line);
+    border-radius:8px;width:34px;height:34px;
+    display:flex;align-items:center;justify-content:center;
+    cursor:pointer;color:var(--ink);
+  }
+  .menu-toggle svg{width:17px;height:17px}
+
+  .content{
+    flex:1;min-width:0;
+  }
+
+  /* ===== HERO ===== */
+  .hero{
+    padding:88px 32px 72px;
+    text-align:center;
+    max-width:760px;margin:0 auto;
+  }
+  .zenith-mark{
+    width:46px;height:46px;margin:0 auto 32px;
+  }
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ink-mute);
+    margin-bottom:18px;
+    font-weight:500;
+  }
+  h1{
+    font-weight:700;
+    font-size:clamp(38px,7vw,64px);
+    line-height:1.04;
+    letter-spacing:-.035em;
+    margin-bottom:20px;
+    color:var(--black);
+  }
+  h1 em{
+    font-style:normal;
+    color:var(--ink-mute);
+  }
+  .hero p{
+    max-width:520px;margin:0 auto;
+    color:var(--ink-soft);
+    font-size:clamp(16px,2.2vw,19px);
+    line-height:1.55;
+    font-weight:450;
+  }
+  .hero-meta{
+    margin-top:40px;
+    display:flex;gap:8px;flex-wrap:wrap;justify-content:center;
+  }
+  .chip{
+    font-family:var(--mono);font-size:11.5px;
+    color:var(--ink-soft);
+    border:1px solid var(--line);
+    background:var(--off);
+    padding:7px 14px;border-radius:980px;
+    font-weight:500;
+  }
+  .chip b{color:var(--ink);font-weight:600}
+
+  /* ===== LAYOUT ===== */
+  main{max-width:760px;margin:0 auto;padding:8px 32px 140px}
+  .section{margin-bottom:108px;scroll-margin-top:72px}
+  .section-head{margin-bottom:36px}
+  .section-num{
+    font-family:var(--mono);font-size:12px;color:var(--ink-mute);
+    letter-spacing:.06em;font-weight:500;
+  }
+  .section-head h2{
+    font-size:clamp(26px,4vw,32px);
+    font-weight:700;letter-spacing:-.025em;
+    margin:8px 0 10px;
+    color:var(--black);
+  }
+  .section-head p{color:var(--ink-soft);max-width:600px;font-size:15.5px;font-weight:450}
+
+  /* ===== CARD ===== */
+  .card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    margin-bottom:16px;
+    transition:box-shadow .25s, border-color .25s;
+    scroll-margin-top:24px;
+  }
+  .card:hover{
+    border-color:var(--ink-mute);
+    box-shadow:0 4px 24px rgba(0,0,0,.05);
+  }
+  .card-top{
+    display:flex;align-items:center;gap:12px;
+    padding:18px 20px;
+    border-bottom:1px solid var(--line-soft);
+    background:var(--off);
+  }
+  .tag{
+    font-family:var(--mono);font-size:10.5px;
+    text-transform:uppercase;letter-spacing:.08em;
+    padding:5px 10px;border-radius:6px;
+    background:var(--black);color:var(--white);
+    white-space:nowrap;font-weight:500;
+  }
+  .tag.outline{
+    background:transparent;color:var(--ink-soft);
+    border:1px solid var(--line);
+  }
+  .card-top h3{
+    font-size:15.5px;font-weight:600;flex:1;letter-spacing:-.01em;
+    color:var(--ink);
+  }
+  .card-top .when{font-size:11.5px;color:var(--ink-mute);font-family:var(--mono);white-space:nowrap;font-weight:500}
+  .card-body{position:relative}
+  pre{
+    font-family:var(--mono);
+    font-size:13px;line-height:1.85;
+    color:var(--ink);
+    padding:22px 20px 20px;
+    white-space:pre-wrap;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+    max-width:100%;
+    margin:0;
+  }
+  pre .ph{color:var(--black);font-weight:600;background:var(--surface);border-radius:4px;padding:0 3px}
+  pre .mut{color:var(--ink-mute)}
+  .copy-btn{
+    position:absolute;top:14px;right:14px;
+    font-family:var(--sans);font-size:12.5px;font-weight:500;
+    color:var(--white);
+    background:var(--black);
+    border:1px solid var(--black);
+    padding:7px 14px;border-radius:980px;
+    cursor:pointer;transition:.18s;
+    display:flex;align-items:center;gap:6px;
+  }
+  .copy-btn:hover{transform:scale(1.03)}
+  .copy-btn:active{transform:scale(.97)}
+  .copy-btn.done{background:var(--white);color:var(--ink);border-color:var(--line)}
+  .copy-btn svg{width:12px;height:12px}
+
+  /* legend */
+  .legend{
+    display:flex;gap:20px;flex-wrap:wrap;
+    font-size:12.5px;color:var(--ink-soft);
+    background:var(--off);border:1px solid var(--line);
+    padding:14px 18px;border-radius:var(--radius-sm);margin:0 0 56px;
+    font-weight:450;
+  }
+  .legend span{display:flex;align-items:center;gap:8px}
+  .legend .ph-sample{
+    font-family:var(--mono);font-size:11px;color:var(--black);font-weight:600;
+    background:var(--surface);border-radius:4px;padding:1px 5px;
+  }
+
+  /* cadence grid */
+  .cadence{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:8px;
+    background:var(--line);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+  .cadence.cadence-4{grid-template-columns:repeat(2,1fr)}
+  .cadence .cell{
+    background:var(--white);padding:24px 22px;
+  }
+  .cadence .cell .d{font-family:var(--mono);font-size:11px;color:var(--ink-mute);letter-spacing:.08em;text-transform:uppercase;font-weight:500}
+  .cadence .cell h4{font-size:15.5px;margin:10px 0 8px;font-weight:600;letter-spacing:-.01em}
+  .cadence .cell p{font-size:13px;color:var(--ink-soft);line-height:1.55}
+
+  /* divider label inside section for sub-groups */
+  .subhead{
+    font-family:var(--mono);font-size:11px;color:var(--ink-mute);
+    letter-spacing:.1em;text-transform:uppercase;
+    margin:40px 0 14px;font-weight:500;
+    display:flex;align-items:center;gap:10px;
+  }
+  .subhead::after{content:'';flex:1;height:1px;background:var(--line)}
+
+  footer{
+    border-top:1px solid var(--line-soft);
+    text-align:center;padding:48px 24px 56px;
+    color:var(--ink-mute);font-size:12.5px;
+  }
+  footer b{color:var(--ink);font-weight:600}
+
+  .toast{
+    position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--black);color:var(--white);
+    font-family:var(--sans);font-size:13px;font-weight:500;
+    padding:12px 22px;border-radius:980px;
+    opacity:0;pointer-events:none;transition:.3s;z-index:100;
+    box-shadow:0 8px 30px rgba(0,0,0,.18);
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  @media(max-width:900px){
+    .card{scroll-margin-top:68px}
+    .sidebar{
+      position:fixed;top:52px;left:0;bottom:0;z-index:55;
+      width:280px;
+      background:var(--white);
+      transform:translateX(-100%);
+      transition:transform .28s ease;
+      box-shadow:0 0 0 rgba(0,0,0,0);
+    }
+    .sidebar.open{
+      transform:translateX(0);
+      box-shadow:20px 0 40px rgba(0,0,0,.08);
+    }
+    .scrim{
+      display:none;
+      position:fixed;inset:0;top:52px;z-index:54;
+      background:rgba(0,0,0,.25);
+    }
+    .scrim.show{display:block}
+    .topbar{display:flex}
+    .shell{display:block}
+  }
+
+  @media(max-width:680px){
+    .cadence{grid-template-columns:1fr}
+    main{padding:8px 18px 100px}
+    .hero{padding:56px 20px 56px}
+    pre{font-size:12px}
+    .copy-btn span{display:none}
+    .copy-btn{padding:8px}
+  }
+</style>
+</head>
+<body>
+
+<!-- MOBILE TOPBAR -->
+<div class="topbar">
+  <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></svg>
+  </button>
+  <div class="sb-brand">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="12" cy="12" r="4" fill="#0A0A0A"/>
+      <g stroke="#0A0A0A" stroke-width="1.6" stroke-linecap="round">
+        <line x1="12" y1="1.5" x2="12" y2="4.5"/>
+        <line x1="12" y1="19.5" x2="12" y2="22.5"/>
+        <line x1="1.5" y1="12" x2="4.5" y2="12"/>
+        <line x1="19.5" y1="12" x2="22.5" y2="12"/>
+      </g>
+    </svg>
+    Zenith
+  </div>
+</div>
+
+<div class="scrim" id="scrim"></div>
+
+<div class="shell">
+
+  <!-- SIDEBAR — TREE NAV -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="4" fill="#0A0A0A"/>
+        <g stroke="#0A0A0A" stroke-width="1.6" stroke-linecap="round">
+          <line x1="12" y1="1.5" x2="12" y2="4.5"/>
+          <line x1="12" y1="19.5" x2="12" y2="22.5"/>
+          <line x1="1.5" y1="12" x2="4.5" y2="12"/>
+          <line x1="19.5" y1="12" x2="22.5" y2="12"/>
+        </g>
+      </svg>
+      Zenith
+    </div>
+
+    <ul class="tree">
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>00 · Ritmo</button>
+        <ul class="tree-kids">
+          <li><a href="#ritmo">Quando enviar cada coisa</a></li>
+        </ul>
+      </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>01 · Onboarding</button>
+        <ul class="tree-kids">
+          <li><a href="#card-onb-fechamento">Confirmação de fechamento</a></li>
+          <li><a href="#card-onb-boasvindas">Boas-vindas + próximos passos</a></li>
+          <li><a href="#card-onb-acessos">Pedido de acessos</a></li>
+          <li><a href="#card-onb-acesso-gerenciador">Como liberar acesso ao Gerenciador</a></li>
+          <li><a href="#card-onb-lembrete-acessos">Lembrete de acessos pendentes</a></li>
+          <li><a href="#card-onb-formulario">Formulário de onboarding de dados</a></li>
+          <li><a href="#card-onb-briefing">Briefing por chamada (alternativa)</a></li>
+          <li><a href="#card-onb-golive">Campanha no ar pela 1ª vez</a></li>
+          <li><a href="#card-onb-resumo">Resumo do que foi configurado</a></li>
+        </ul>
+      </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>02 · Mensal</button>
+        <ul class="tree-kids">
+          <li><a href="#card-mensal-completo">Mensal completo · estrutura</a></li>
+          <li><a href="#card-mensal-aviso">Aviso de envio do relatório</a></li>
+        </ul>
+      </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>03 · Semanal</button>
+        <ul class="tree-kids">
+          <li><a href="#card-semanal-corrido">Modelo A · texto corrido</a></li>
+          <li><a href="#card-semanal-campanha">Modelo B · por campanha</a></li>
+          <li><a href="#card-semanal-checkin">Check-in de segunda (enxuto)</a></li>
+        </ul>
+      </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>04 · Mensagens</button>
+        <ul class="tree-kids">
+          <li><a href="#card-msg-quarta">Pulso de quarta</a></li>
+          <li><a href="#card-msg-sexta">Destaque positivo (sexta)</a></li>
+          <li><a href="#card-msg-depoimento">Pedir depoimento / indicação</a></li>
+          <li><a href="#card-msg-material">Cobrar material / acesso</a></li>
+          <li><a href="#card-msg-pagamento">Lembrete de pagamento</a></li>
+          <li><a href="#card-msg-reagendar">Reagendar reunião</a></li>
+          <li><a href="#card-msg-abaixo">Resultado abaixo do esperado</a></li>
+          <li><a href="#card-msg-verba">Pedido de aumento de verba</a></li>
+          <li><a href="#card-msg-insatisfeito">Cliente insatisfeito</a></li>
+          <li><a href="#card-msg-encerramento">Encerramento de contrato</a></li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="sb-foot">19 mensagens · 5 relatórios<br>9 passos de onboarding</div>
+  </aside>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="zenith-mark">
+        <svg viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="23" cy="23" r="7" fill="#0A0A0A"/>
+          <g stroke="#0A0A0A" stroke-width="1.8" stroke-linecap="round">
+            <line x1="23" y1="3" x2="23" y2="10"/>
+            <line x1="23" y1="36" x2="23" y2="43"/>
+            <line x1="3" y1="23" x2="10" y2="23"/>
+            <line x1="36" y1="23" x2="43" y2="23"/>
+          </g>
+        </svg>
+      </div>
+      <div class="eyebrow">Central de Operações — Tráfego Pago</div>
+      <h1>Tudo da Zenith,<br><em>em um só lugar.</em></h1>
+      <p>Modelos prontos de relatórios e mensagens para clientes. Copie, preencha os campos em destaque e envie. Um padrão único, sem retrabalho.</p>
+      <div class="hero-meta">
+        <div class="chip"><b>3</b> cadências de relatório</div>
+        <div class="chip"><b>19</b> modelos de mensagem</div>
+        <div class="chip"><b>9</b> passos de onboarding</div>
+      </div>
+    </header>
+
+    <main>
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <span><span class="ph-sample">[assim]</span> = preencher antes de enviar</span>
+    <span>Clique em <b style="color:var(--ink)">Copiar</b> em qualquer card</span>
+  </div>
+
+  <!-- 00 RITMO -->
+  <section class="section" id="ritmo">
+    <div class="section-head">
+      <div class="section-num">00 — Ritmo da operação</div>
+      <h2>Quando enviar cada coisa</h2>
+      <p>Um cliente bem atendido é um cliente que nunca precisa perguntar "e aí, como tá?". O ritmo abaixo mantém todo mundo informado sem sobrecarregar.</p>
+    </div>
+    <div class="cadence cadence-4">
+      <div class="cell">
+        <div class="d">Entrada do cliente</div>
+        <h4>Onboarding</h4>
+        <p>Sequência única do fechamento até a campanha no ar: boas-vindas, acessos, briefing e go-live.</p>
+      </div>
+      <div class="cell">
+        <div class="d">Toda segunda</div>
+        <h4>Check-in semanal</h4>
+        <p>Mensagem rápida no WhatsApp com os números da semana anterior e o foco da semana atual.</p>
+      </div>
+      <div class="cell">
+        <div class="d">Quarta · Sexta</div>
+        <h4>Pulso no meio</h4>
+        <p>Toque curto sinalizando otimizações em andamento ou um destaque positivo. Mantém presença.</p>
+      </div>
+      <div class="cell">
+        <div class="d">Início do mês</div>
+        <h4>Relatório mensal</h4>
+        <p>Documento completo de fechamento: resultados, comparativo, aprendizados e plano do próximo mês.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 01 ONBOARDING -->
+  <section class="section" id="onboarding">
+    <div class="section-head">
+      <div class="section-num">01 — Entrada do cliente</div>
+      <h2>Onboarding</h2>
+      <p>A jornada completa do fechamento até a campanha no ar. Siga a ordem dos cards — cada mensagem assume que a anterior já foi enviada.</p>
+    </div>
+
+    <div class="subhead">1. Fechamento</div>
+
+    <div class="card" id="card-onb-fechamento">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Confirmação de fechamento</h3>
+        <span class="when">dia 0</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Que ótimo te ter como
+cliente da Zenith 🎉
+
+Fechado então: <span class="ph">[escopo combinado, ex:
+gestão de tráfego Meta + Google Ads]</span>,
+investimento de R$ <span class="ph">[valor]</span>/mês, início
+em <span class="ph">[data]</span>.
+
+Em instantes te mando as boas-vindas com
+todos os próximos passos. Bora! 🚀</pre>
+      </div>
+    </div>
+
+    <div class="subhead">2. Boas-vindas</div>
+
+    <div class="card" id="card-onb-boasvindas">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Boas-vindas + próximos passos</h3>
+        <span class="when">dia 0</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Olá <span class="ph">[Nome]</span>, seja muito bem-vindo(a) à
+Zenith! 🚀
+
+Sou <span class="ph">[seu nome]</span>, vou cuidar das suas
+campanhas a partir de agora. Como funciona
+nosso dia a dia:
+
+• Relatório completo no início de cada mês
+• Resumo toda segunda-feira
+• Updates rápidos no meio da semana
+• Estou aqui sempre que precisar 💬
+
+Próximos passos pra colocar tudo no ar:
+1️⃣ Te envio a lista de acessos necessários
+2️⃣ Você libera os acessos
+3️⃣ Fazemos um briefing rápido (15-20 min)
+4️⃣ Primeira campanha no ar em até <span class="ph">[prazo]</span>
+
+Te mando a lista de acessos já na sequência.
+Vamos levar seus resultados ao topo! ⛰️</pre>
+      </div>
+    </div>
+
+    <div class="subhead">3. Acessos</div>
+
+    <div class="card" id="card-onb-acessos">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pedido de acessos</h3>
+        <span class="when">dia 0-1</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Segue a lista de acessos
+e materiais pra eu começar a configurar
+tudo:
+
+🔑 ACESSOS
+[ ] <span class="ph">[ex: acesso admin ao Business Manager]</span>
+[ ] <span class="ph">[ex: conta de anúncios]</span>
+[ ] <span class="ph">[ex: redes sociais / página]</span>
+[ ] <span class="ph">[ex: acesso ao site / pixel]</span>
+
+📁 MATERIAIS
+[ ] <span class="ph">[ex: logo em alta resolução]</span>
+[ ] <span class="ph">[ex: criativos ou referências visuais]</span>
+[ ] <span class="ph">[ex: dados da empresa / oferta]</span>
+
+💳 FINANCEIRO
+[ ] <span class="ph">[ex: forma de pagamento da verba de ads]</span>
+
+Pode me mandar aos poucos, conforme for
+juntando. Qualquer dúvida sobre como
+liberar algum acesso, me chama que eu
+te guio passo a passo. 🙌</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-onb-acesso-gerenciador">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Como liberar acesso ao Gerenciador</h3>
+        <span class="when">dia 0-1</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Pra eu conseguir acessar o
+Gerenciador de Anúncios, gravei um vídeo
+rápido mostrando o passo a passo 👇
+
+Observações importantes antes de assistir:
+✅ Use notebook ou computador (não funciona
+   bem pelo celular)
+✅ Tenha acesso ao seu Facebook
+✅ Tenha acesso à página da empresa no
+   Facebook
+✅ Tenha acesso ao Gerenciador de Negócios
+   da empresa
+
+🔗 Vídeo com o passo a passo:
+https://www.loom.com/share/7c1f888df7d9476391104bb13da6f05d
+
+No vídeo está indicado o e-mail pra
+redirecionar o Gerenciador de Anúncios.
+Use este e-mail:
+
+zenithcompanyads@gmail.com
+
+Qualquer dúvida durante o processo, me
+chama que eu te ajudo em tempo real! 🚀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-onb-lembrete-acessos">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Lembrete de acessos pendentes</h3>
+        <span class="when">se travar</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, tudo bem? 😊
+
+Só dando um toque: ainda estou aguardando
+<span class="ph">[acesso/material específico]</span> pra conseguir
+avançar com a configuração.
+
+Assim que receber, já coloco a campanha
+em movimento. Precisa de ajuda pra liberar
+o acesso? Posso te chamar numa ligação
+rápida se for mais fácil. 📞</pre>
+      </div>
+    </div>
+
+    <div class="subhead">4. Briefing</div>
+
+    <div class="card" id="card-onb-formulario">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Formulário de onboarding de dados</h3>
+        <span class="when">dia 1-3</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Pra eu já começar a desenhar
+a estratégia, preciso que você preencha
+um formulário rápido com os dados do
+seu negócio:
+
+🔗 https://docs.google.com/forms/d/e/1FAIpQLScZ5A4F_xIGL0iDH4_78Ztd-chGvnHs-p2PQh1SAYjtGYEt-A/viewform
+
+Leva uns 5-10 minutinhos. Quanto mais
+completo, melhor consigo direcionar as
+campanhas desde o início.
+
+Assim que preencher, me avisa por aqui
+que já parto pra montagem da primeira
+campanha. 🙌</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-onb-briefing">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Briefing por chamada (alternativa)</h3>
+        <span class="when">se preferir não usar o form</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Vi que prefere conversar em
+vez de preencher o formulário, sem
+problemas 🙌
+
+Antes de montar a primeira campanha,
+preciso entender alguns pontos. Pode me
+responder por aqui mesmo ou prefere uma
+call rápida de 15-20 min?
+
+🎯 Qual o principal objetivo agora:
+   <span class="ph">[leads / vendas / reconhecimento]</span>?
+👤 Quem é o cliente ideal de vocês?
+💰 Ticket médio / valor do produto-serviço?
+📍 Região de atuação?
+🚫 Algo que NÃO pode aparecer no anúncio?
+🏆 O que mais diferencia vocês da concorrência?
+
+Com isso já consigo desenhar a estratégia
+inicial. 🚀</pre>
+      </div>
+    </div>
+
+    <div class="subhead">5. No ar</div>
+
+    <div class="card" id="card-onb-golive">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Campanha no ar pela 1ª vez</h3>
+        <span class="when">go-live</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Novidade fresquinha 🔥
+
+Acabei de colocar no ar <span class="ph">[nome da campanha]</span>,
+com foco em <span class="ph">[objetivo: leads/vendas/alcance]</span>.
+
+Os primeiros dias servem pro algoritmo
+aprender — é normal o custo oscilar um
+pouco. Vou acompanhar de perto e já te
+trago um retorno em <span class="ph">[prazo, ex: 3 dias]</span>.
+
+Qualquer novidade relevante, te aviso na hora! 👀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-onb-resumo">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Resumo do que foi configurado</h3>
+        <span class="when">após go-live</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Pra fechar a configuração
+inicial, aqui vai um resumo rápido do
+que ficou no ar:
+
+✅ Campanha: <span class="ph">[nome]</span>
+✅ Objetivo: <span class="ph">[leads/vendas/alcance]</span>
+✅ Público: <span class="ph">[resumo do segmento]</span>
+✅ Verba mensal: R$ <span class="ph">[valor]</span>
+✅ Criativos no ar: <span class="ph">[nº/descrição]</span>
+
+A partir de agora entramos no ritmo normal:
+resumo toda segunda e relatório completo
+no fechamento do mês.
+
+Qualquer dúvida nesse início, é só chamar.
+Bem-vindo(a) de novo! 🙌</pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 02 MENSAL -->
+  <section class="section" id="mensal">
+    <div class="section-head">
+      <div class="section-num">02 — Fechamento</div>
+      <h2>Relatório mensal</h2>
+      <p>O entregável de maior peso. Mostra resultado, conta a história por trás dos números e deixa claro para onde vamos. Envie como documento ou mensagem estruturada.</p>
+    </div>
+
+    <div class="card" id="card-mensal-completo">
+      <div class="card-top">
+        <span class="tag">Relatório</span>
+        <h3>Mensal completo · estrutura</h3>
+        <span class="when">1× / mês</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>📊 RELATÓRIO MENSAL — <span class="ph">[NOME DO CLIENTE]</span>
+Período: <span class="ph">[01/MÊS]</span> a <span class="ph">[30/MÊS]</span>
+Responsável: <span class="ph">[SEU NOME]</span> · Zenith
+
+<span class="mut">───────────────────────────</span>
+1. RESUMO EXECUTIVO
+<span class="mut">───────────────────────────</span>
+Em uma frase, o que aconteceu no mês:
+<span class="ph">[Ex: investimos R$X e geramos Y leads a um custo Z%
+abaixo do mês anterior.]</span>
+
+<span class="mut">───────────────────────────</span>
+2. NÚMEROS DO MÊS
+<span class="mut">───────────────────────────</span>
+• Investimento total ...... R$ <span class="ph">[valor]</span>
+• Leads / Conversões ...... <span class="ph">[nº]</span>
+• Custo por resultado ..... R$ <span class="ph">[valor]</span>
+• Alcance .................. <span class="ph">[nº]</span>
+• Cliques ................. <span class="ph">[nº]</span>
+• CTR ..................... <span class="ph">[%]</span>
+• Faturamento atribuído ... R$ <span class="ph">[valor]</span>
+• ROAS / Retorno .......... <span class="ph">[Nx]</span>
+
+<span class="mut">───────────────────────────</span>
+3. COMPARATIVO COM MÊS ANTERIOR
+<span class="mut">───────────────────────────</span>
+• Custo por lead: <span class="ph">[mês passado]</span> → <span class="ph">[este mês]</span> (<span class="ph">[↑/↓ %]</span>)
+• Volume de leads: <span class="ph">[antes]</span> → <span class="ph">[agora]</span> (<span class="ph">[↑/↓ %]</span>)
+• Leitura: <span class="ph">[o que esse movimento significa]</span>
+
+<span class="mut">───────────────────────────</span>
+4. O QUE DEU CERTO
+<span class="mut">───────────────────────────</span>
+✅ <span class="ph">[Campanha / criativo / público que performou]</span>
+✅ <span class="ph">[Otimização que trouxe resultado]</span>
+
+<span class="mut">───────────────────────────</span>
+5. O QUE AJUSTAMOS
+<span class="mut">───────────────────────────</span>
+🔧 <span class="ph">[Problema identificado + ação tomada]</span>
+
+<span class="mut">───────────────────────────</span>
+6. PLANO PARA O PRÓXIMO MÊS
+<span class="mut">───────────────────────────</span>
+→ <span class="ph">[Prioridade 1]</span>
+→ <span class="ph">[Prioridade 2]</span>
+→ <span class="ph">[Teste / novidade que vamos rodar]</span>
+
+Qualquer dúvida, estou à disposição. 🚀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-mensal-aviso">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Aviso de envio do relatório mensal</h3>
+        <span class="when">acompanha o doc</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Tudo certo? 👋
+
+Acabei de fechar o relatório de <span class="ph">[mês]</span> e já te
+mando aqui. Destaque do mês: <span class="ph">[1 conquista
+em poucas palavras]</span>.
+
+Dá uma olhada com calma e, se quiser, marco
+15 min essa semana pra gente revisar juntos
+e alinhar o próximo passo. Bora pra cima 🚀</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 SEMANAL -->
+  <section class="section" id="semanal">
+    <div class="section-head">
+      <div class="section-num">03 — Acompanhamento</div>
+      <h2>Relatório semanal</h2>
+      <p>Curto, direto e enviado toda segunda. Dois formatos abaixo — escolha o que combina com o perfil do cliente, ou alterne entre eles.</p>
+    </div>
+
+    <div class="subhead">Modelo A · texto corrido</div>
+
+    <div class="card" id="card-semanal-corrido">
+      <div class="card-top">
+        <span class="tag">Relatório</span>
+        <h3>Semanal · resumo da segunda</h3>
+        <span class="when">toda segunda</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>📈 RESUMO DA SEMANA — <span class="ph">[Cliente]</span>
+<span class="ph">[dd/mm]</span> a <span class="ph">[dd/mm]</span>
+
+🔸 Investido: R$ <span class="ph">[valor]</span>
+🔸 Leads/vendas: <span class="ph">[nº]</span>
+🔸 Custo por resultado: R$ <span class="ph">[valor]</span>
+🔸 vs. semana anterior: <span class="ph">[↑/↓ + leitura curta]</span>
+
+✅ Destaque: <span class="ph">[o que foi bem]</span>
+🎯 Foco desta semana: <span class="ph">[o que vamos fazer]</span>
+
+Qualquer coisa é só chamar! 💬</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Modelo B · painel por campanha</div>
+
+    <div class="card" id="card-semanal-campanha">
+      <div class="card-top">
+        <span class="tag">Relatório</span>
+        <h3>Semanal · quebra por campanha</h3>
+        <span class="when">toda segunda</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>📊 SEMANA EM CAMPANHAS — <span class="ph">[Cliente]</span>
+<span class="ph">[dd/mm]</span> a <span class="ph">[dd/mm]</span>
+
+<span class="mut">───────────────────────────</span>
+VISÃO GERAL
+<span class="mut">───────────────────────────</span>
+Investido: R$ <span class="ph">[valor]</span> · Resultados: <span class="ph">[nº]</span>
+Custo médio: R$ <span class="ph">[valor]</span> · vs sem. anterior: <span class="ph">[↑/↓ %]</span>
+
+<span class="mut">───────────────────────────</span>
+POR CAMPANHA
+<span class="mut">───────────────────────────</span>
+🟢 <span class="ph">[Nome da campanha 1]</span>
+   R$ <span class="ph">[gasto]</span> · <span class="ph">[nº resultados]</span> · R$ <span class="ph">[custo/resultado]</span>
+   <span class="ph">[1 linha: por que está verde]</span>
+
+🟡 <span class="ph">[Nome da campanha 2]</span>
+   R$ <span class="ph">[gasto]</span> · <span class="ph">[nº resultados]</span> · R$ <span class="ph">[custo/resultado]</span>
+   <span class="ph">[1 linha: o que está sendo observado]</span>
+
+🔴 <span class="ph">[Nome da campanha 3]</span>
+   R$ <span class="ph">[gasto]</span> · <span class="ph">[nº resultados]</span> · R$ <span class="ph">[custo/resultado]</span>
+   <span class="ph">[1 linha: ação corretiva já em curso]</span>
+
+<span class="mut">───────────────────────────</span>
+PRÓXIMOS PASSOS
+<span class="mut">───────────────────────────</span>
+→ <span class="ph">[ação 1 para a semana]</span>
+→ <span class="ph">[ação 2 para a semana]</span></pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-semanal-checkin">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Check-in de segunda (versão enxuta)</h3>
+        <span class="when">toda segunda</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Bom dia, <span class="ph">[Nome]</span>! ☀️ Começando a semana
+por aqui.
+
+Resumo rápido da semana passada:
+geramos <span class="ph">[nº]</span> resultados com custo de
+R$ <span class="ph">[valor]</span> cada — <span class="ph">[melhor/estável/em ajuste]</span>.
+
+Essa semana o foco é <span class="ph">[ação principal]</span>.
+Te atualizo na quarta. 👍</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 WHATSAPP -->
+  <section class="section" id="whats">
+    <div class="section-head">
+      <div class="section-num">04 — Contato no dia a dia</div>
+      <h2>Mensagens de WhatsApp</h2>
+      <p>Os toques que mantêm o relacionamento vivo durante a semana e em momentos específicos do contrato. Escolha pela situação, ajuste o tom e dispare.</p>
+    </div>
+
+    <div class="subhead">Rotina semanal</div>
+
+    <div class="card" id="card-msg-quarta">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pulso do meio de semana (quarta)</h3>
+        <span class="when">quarta</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, passando pra te dar um pulso 👀
+
+As campanhas estão rodando bem — <span class="ph">[breve
+status, ex: custo por lead caindo / volume
+estável]</span>. Fiz um ajuste em <span class="ph">[criativo/público]</span>
+hoje pra melhorar ainda mais.
+
+Sexta te trago o panorama. Boa semana! 🙌</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-sexta">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Destaque positivo (sexta)</h3>
+        <span class="when">sexta</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Sextou, <span class="ph">[Nome]</span>! 🎉
+
+Boa notícia pra fechar a semana: <span class="ph">[melhor
+resultado da semana, ex: batemos X leads,
+melhor criativo trouxe Y vendas]</span>.
+
+Semana que vem seguimos nesse ritmo. Bom
+fim de semana! 😄</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Relacionamento</div>
+
+    <div class="card" id="card-msg-depoimento">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pedir depoimento / indicação</h3>
+        <span class="when">cliente feliz</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Fico muito feliz com os resultados
+que estamos construindo juntos 🙌
+
+Tenho um pedido rápido: toparia gravar um
+áudio/vídeo curtinho contando sua experiência
+com a Zenith? Ajuda demais a gente.
+
+E se conhecer alguém que precise de tráfego
+bem feito, ficarei grato pela indicação 🚀</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Operacional</div>
+
+    <div class="card" id="card-msg-material">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Cobrar material / acesso (sem soar chato)</h3>
+        <span class="when">quando travar</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Tudo bem? 😊
+
+Tô só finalizando <span class="ph">[o que depende disso, ex:
+a nova campanha]</span> e pra destravar preciso de
+<span class="ph">[material/acesso específico]</span>.
+
+Quando der, me envia por aqui mesmo? Assim
+já coloco no ar ainda <span class="ph">[hoje/essa semana]</span>. 🙏</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-pagamento">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Lembrete de pagamento</h3>
+        <span class="when">financeiro</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, tudo bem? 😊
+
+Passando pra lembrar que a fatura de
+<span class="ph">[mês de referência]</span> no valor de R$ <span class="ph">[valor]</span>
+vence em <span class="ph">[data]</span>.
+
+Segue o link/dados de pagamento:
+<span class="ph">[link ou chave]</span>
+
+Qualquer dúvida, só chamar! 🙌</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-reagendar">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Reagendar reunião</h3>
+        <span class="when">operacional</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Preciso remarcar nossa reunião
+de <span class="ph">[dia/horário original]</span>.
+
+Ficaria bom pra você <span class="ph">[nova opção 1]</span> ou
+<span class="ph">[nova opção 2]</span>?
+
+Desculpa o transtorno e obrigado pela
+compreensão 🙏</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Momentos delicados</div>
+
+    <div class="card" id="card-msg-abaixo">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Comunicar resultado abaixo do esperado</h3>
+        <span class="when">transparência</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, te trago um panorama honesto 🤝
+
+Essa semana <span class="ph">[métrica]</span> ficou abaixo do que
+a gente buscava — <span class="ph">[motivo provável, ex:
+saturação do criativo / aumento de custo]</span>.
+
+Já estou tratando: <span class="ph">[ação 1]</span> e <span class="ph">[ação 2]</span>.
+Espero ver reação até <span class="ph">[prazo]</span> e te mantenho
+informado de perto.
+
+Pode contar comigo. 💪</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-verba">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pedido de aumento de verba</h3>
+        <span class="when">proposta</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Boa notícia 📈
+
+As campanhas estão performando tão bem que
+batemos no teto da verba atual — <span class="ph">[métrica
+que comprova, ex: CPL caiu X% e dá pra
+escalar]</span>.
+
+Sugiro aumentarmos o investimento de
+R$ <span class="ph">[valor atual]</span> para R$ <span class="ph">[valor sugerido]</span>
+a partir de <span class="ph">[data]</span> pra capturar mais
+resultado nesse ritmo.
+
+Topa que eu já prepare o plano de escala? 🚀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-insatisfeito">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Resposta a cliente insatisfeito</h3>
+        <span class="when">contorno</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, entendo totalmente sua
+preocupação e agradeço por me trazer isso
+diretamente 🙏
+
+Sobre <span class="ph">[ponto levantado]</span>: <span class="ph">[explicação
+honesta e objetiva do que aconteceu]</span>.
+
+O que vou fazer agora: <span class="ph">[ação concreta
+e prazo]</span>.
+
+Podemos conversar por chamada hoje ainda
+se preferir? Quero ter certeza que isso
+fique resolvido. 📞</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Encerramento</div>
+
+    <div class="card" id="card-msg-encerramento">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Encerramento de contrato</h3>
+        <span class="when">offboarding</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, recebi seu retorno e está
+tudo certo quanto ao encerramento.
+
+Vou organizar a transição:
+• Último dia ativo: <span class="ph">[data]</span>
+• Entrega de acessos/dados: <span class="ph">[data]</span>
+• Relatório final de fechamento: <span class="ph">[data]</span>
+
+Foi muito bom trabalhar com você nesse
+período. Qualquer coisa que precisar daqui
+pra frente, as portas estão abertas 🙌</pre>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  <b>Zenith</b> · Central de Relatórios — leve todo cliente ao zênite
+</footer>
+
+    </div><!-- /content -->
+  </div><!-- /shell -->
+
+<div class="toast" id="toast">Copiado</div>
+
+<script>
+  const toast = document.getElementById('toast');
+  let toastTimer;
+  function showToast(){
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(()=>toast.classList.remove('show'),1600);
+  }
+  document.querySelectorAll('[data-copy]').forEach(btn=>{
+    btn.addEventListener('click', async ()=>{
+      const pre = btn.parentElement.querySelector('pre');
+      const text = pre.innerText;
+      try{
+        await navigator.clipboard.writeText(text);
+      }catch(e){
+        const ta=document.createElement('textarea');
+        ta.value=text;document.body.appendChild(ta);ta.select();
+        document.execCommand('copy');ta.remove();
+      }
+      const label = btn.querySelector('span');
+      const original = label ? label.textContent : '';
+      btn.classList.add('done');
+      if(label) label.textContent='Copiado';
+      showToast();
+      setTimeout(()=>{
+        btn.classList.remove('done');
+        if(label) label.textContent=original;
+      },1600);
+    });
+  });
+
+  /* ---- Tree nav: expand/collapse ---- */
+  document.querySelectorAll('.tree-group').forEach(group=>{
+    const top = group.querySelector('.tree-top');
+    top.addEventListener('click', ()=>{
+      group.classList.toggle('open');
+    });
+  });
+
+  /* ---- Mobile sidebar drawer ---- */
+  const sidebar = document.getElementById('sidebar');
+  const scrim = document.getElementById('scrim');
+  const menuToggle = document.getElementById('menuToggle');
+  function openDrawer(){ sidebar.classList.add('open'); scrim.classList.add('show'); }
+  function closeDrawer(){ sidebar.classList.remove('open'); scrim.classList.remove('show'); }
+  if(menuToggle){
+    menuToggle.addEventListener('click', ()=>{
+      sidebar.classList.contains('open') ? closeDrawer() : openDrawer();
+    });
+  }
+  scrim.addEventListener('click', closeDrawer);
+  sidebar.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', ()=>{ closeDrawer(); });
+  });
+
+  /* ---- Active link tracking + auto-expand on scroll ---- */
+  const sidebarLinks = Array.from(sidebar.querySelectorAll('.tree-kids a'));
+  const targets = sidebarLinks
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean);
+
+  function setActive(id){
+    sidebarLinks.forEach(a=>{
+      const isActive = a.getAttribute('href') === '#'+id;
+      a.classList.toggle('active', isActive);
+      if(isActive){
+        const group = a.closest('.tree-group');
+        if(group) group.classList.add('open');
+      }
+    });
+  }
+
+  if('IntersectionObserver' in window && targets.length){
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){
+          setActive(entry.target.id);
+        }
+      });
+    }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+    targets.forEach(t => observer.observe(t));
+  }
+
+  /* Open the first group by default */
+  const firstGroup = sidebar.querySelector('.tree-group');
+  if(firstGroup) firstGroup.classList.add('open');
+</script>
+</body>
+</html>
