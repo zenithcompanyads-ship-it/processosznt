@@ -286,6 +286,76 @@
   .cadence .cell h4{font-size:15.5px;margin:10px 0 8px;font-weight:600;letter-spacing:-.01em}
   .cadence .cell p{font-size:13px;color:var(--ink-soft);line-height:1.55}
 
+  /* ===== MATRIX (priorização) ===== */
+  .matrix-wrap{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    overflow:hidden;
+    margin-bottom:16px;
+    scroll-margin-top:24px;
+  }
+  .matrix-head{
+    display:flex;align-items:center;gap:12px;
+    padding:18px 20px;
+    border-bottom:1px solid var(--line-soft);
+    background:var(--off);
+  }
+  .matrix-head h3{font-size:15.5px;font-weight:600;letter-spacing:-.01em}
+  .matrix-grid{
+    display:grid;
+    grid-template-columns:34px 1fr 1fr;
+    grid-template-rows:1fr 1fr 28px;
+    gap:1px;
+    background:var(--line);
+  }
+  .m-axis-y{
+    grid-row:1 / 3;grid-column:1;
+    background:var(--white);
+    display:flex;flex-direction:column;justify-content:space-between;
+    align-items:center;padding:18px 0;
+  }
+  .m-axis-y span{
+    writing-mode:vertical-rl;transform:rotate(180deg);
+    font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);
+    letter-spacing:.06em;white-space:nowrap;font-weight:500;
+  }
+  .m-axis-x{
+    grid-row:3;grid-column:2 / 4;
+    background:var(--white);
+    display:flex;
+  }
+  .m-axis-x span{
+    flex:1;display:flex;align-items:center;justify-content:center;
+    font-family:var(--mono);font-size:10.5px;color:var(--ink-mute);
+    letter-spacing:.06em;font-weight:500;
+  }
+  .m-cell{
+    background:var(--white);
+    padding:20px;
+  }
+  .m-tag{
+    font-size:12px;font-weight:600;margin-bottom:8px;letter-spacing:-.005em;
+  }
+  .m-cell h4{font-size:14.5px;font-weight:600;margin-bottom:6px;letter-spacing:-.01em}
+  .m-cell p{font-size:12.5px;color:var(--ink-soft);line-height:1.55}
+  .m-cell.crit{background:#FFF5F5}
+  .m-cell.watch{background:#FFFBEB}
+  .m-cell.low{background:#FFF7ED}
+  .m-cell.auto{background:#F0FDF6}
+  .matrix-foot{
+    padding:14px 20px;
+    border-top:1px solid var(--line-soft);
+    font-size:12.5px;color:var(--ink-soft);
+    background:var(--white);
+  }
+  .matrix-foot b{color:var(--ink);font-weight:600}
+
+  @media(max-width:560px){
+    .matrix-grid{grid-template-columns:24px 1fr 1fr}
+    .m-cell{padding:14px}
+    .m-axis-y span{font-size:9.5px}
+  }
+
   /* divider label inside section for sub-groups */
   .subhead{
     font-family:var(--mono);font-size:11px;color:var(--ink-mute);
@@ -441,9 +511,75 @@
           <li><a href="#card-msg-encerramento">Encerramento de contrato</a></li>
         </ul>
       </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>05 · Presença Ativa</button>
+        <ul class="tree-kids">
+          <li><a href="#card-msg-cobrar-lead">Cobrando qualificação de lead</a></li>
+          <li><a href="#card-msg-cobrar-pos-relatorio">Pós-relatório · resultado comercial</a></li>
+          <li><a href="#card-msg-cobrar-atendimento">Velocidade de atendimento</a></li>
+          <li><a href="#card-msg-cobrar-feedback-criativo">Feedback de criativo novo</a></li>
+          <li><a href="#card-msg-cobrar-meta">Revisando meta do mês</a></li>
+        </ul>
+      </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>06 · Priorização</button>
+        <ul class="tree-kids">
+          <li><a href="#card-matriz-prioridade">Matriz de prioridade de contas</a></li>
+          <li><a href="#card-rotina-triagem">Rotina de triagem semanal</a></li>
+        </ul>
+      </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>07 · SOP de Otimização</button>
+        <ul class="tree-kids">
+          <li><a href="#card-sop-diagnostico">Diagnóstico em 5 passos</a></li>
+          <li><a href="#card-sop-sinais">Sinais de alerta · nicho Apple</a></li>
+          <li><a href="#card-sop-criativo">Quando trocar criativo</a></li>
+          <li><a href="#card-sop-publico">Quando ajustar público</a></li>
+          <li><a href="#card-sop-escala">Quando escalar verba</a></li>
+          <li><a href="#card-sop-log">Log de otimização</a></li>
+        </ul>
+      </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>08 · Nicho Apple 🍎</button>
+        <ul class="tree-kids">
+          <li><a href="#apple-relatorio-mensal">Relatório mensal Apple</a></li>
+          <li><a href="#apple-relatorio-semanal">Relatório semanal Apple</a></li>
+          <li><a href="#apple-checkin">Check-in de segunda</a></li>
+          <li><a href="#apple-pulso-quarta">Pulso de quarta</a></li>
+          <li><a href="#apple-destaque-sexta">Destaque positivo (sexta)</a></li>
+          <li><a href="#apple-cobrar-lead">Cobrando qualidade de lead</a></li>
+          <li><a href="#apple-cobrar-estoque">Alerta de produto/estoque</a></li>
+          <li><a href="#apple-lancamento">Mensagem de lançamento Apple</a></li>
+          <li><a href="#apple-pos-venda">Pós-venda / fidelização</a></li>
+          <li><a href="#apple-resultado-abaixo">Resultado abaixo do esperado</a></li>
+          <li><a href="#apple-escala-verba">Pedido de escala de verba</a></li>
+        </ul>
+      </li>
+
+      <li class="tree-group">
+        <button class="tree-top" type="button"><svg class="chev" viewBox="0 0 8 8" fill="currentColor"><path d="M1 0l6 4-6 4z"/></svg>09 · Meu Estilo 🗣️</button>
+        <ul class="tree-kids">
+          <li><a href="#estilo-checkin">Check-in direto de segunda</a></li>
+          <li><a href="#estilo-resultado-semana">Passando resultado da semana</a></li>
+          <li><a href="#estilo-cobrar-fechamento">Cobrando quantos fecharam</a></li>
+          <li><a href="#estilo-explicar-estrategia">Explicando a estratégia</a></li>
+          <li><a href="#estilo-pulso">Pulso no meio da semana</a></li>
+          <li><a href="#estilo-agregar-insight">Insight que agrega valor</a></li>
+          <li><a href="#estilo-ajuste-criativo">Avisando ajuste de criativo</a></li>
+          <li><a href="#estilo-problema-resolvido">Problema resolvido</a></li>
+          <li><a href="#estilo-depoimento">Pedindo depoimento em vídeo</a></li>
+          <li><a href="#estilo-relatorio-mensal">Relatório mensal no estilo</a></li>
+          <li><a href="#estilo-meta-do-mes">Revisando meta do mês</a></li>
+          <li><a href="#estilo-reuniao">Pedindo reunião de alinhamento</a></li>
+        </ul>
+      </li>
     </ul>
 
-    <div class="sb-foot">19 mensagens · 5 relatórios<br>9 passos de onboarding</div>
+    <div class="sb-foot">12 no seu estilo · 11 Apple · 6 SOPs</div>
   </aside>
 
   <!-- CONTENT -->
@@ -468,7 +604,9 @@
       <div class="hero-meta">
         <div class="chip"><b>3</b> cadências de relatório</div>
         <div class="chip"><b>19</b> modelos de mensagem</div>
+        <div class="chip"><b>5</b> mensagens de presença ativa</div>
         <div class="chip"><b>9</b> passos de onboarding</div>
+        <div class="chip"><b>1</b> matriz + <b>6</b> SOPs</div>
       </div>
     </header>
 
@@ -1185,6 +1323,1168 @@ Vou organizar a transição:
 Foi muito bom trabalhar com você nesse
 período. Qualquer coisa que precisar daqui
 pra frente, as portas estão abertas 🙌</pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 05 PRESENÇA ATIVA -->
+  <section class="section" id="presenca">
+    <div class="section-head">
+      <div class="section-num">05 — No pé do cliente</div>
+      <h2>Presença ativa</h2>
+      <p>Mensagens que fazem o cliente sentir que você vive dentro da conta dele. Cobram resultado, qualificam lead, checam o comercial — sem esperar o relatório mensal pra conversar.</p>
+    </div>
+
+
+    <div class="card" id="card-msg-cobrar-lead">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Cobrando qualificação de lead</h3>
+        <span class="when">1-2× / semana</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Os leads continuam chegando
+por aqui 📲
+
+Pra eu continuar afinando o público e
+melhorar a qualidade, me conta:
+
+Dos últimos leads que entraram, quantos
+eram perfil bom pra vocês? Algum fechou?
+
+Esses detalhes fazem muita diferença na
+otimização — com esse feedback eu já
+consigo ajustar o público e trazer leads
+mais quentes. 🎯</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-cobrar-pos-relatorio">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pós-relatório · cobrando resultado comercial</h3>
+        <span class="when">2-3 dias após enviar relatório</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, conseguiu dar uma olhada no
+relatório? 👀
+
+Queria entender o lado comercial: dos
+<span class="ph">[nº]</span> leads que vieram esse mês, quantos
+vocês conseguiram converter? Fecharam
+alguma venda?
+
+Pergunto porque a parte do tráfego tá
+caminhando bem — e quero ter certeza que
+o volume que estamos gerando tá sendo
+bem aproveitado pela equipe. Isso me
+ajuda a calibrar ainda mais a campanha. 🚀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-cobrar-atendimento">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Checando velocidade de atendimento</h3>
+        <span class="when">quando suspeitar gargalo</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Uma coisa que impacta muito
+o resultado de tráfego pago e pouca
+gente percebe: a velocidade de resposta
+ao lead.
+
+Quando vocês costumam responder os leads
+que chegam? Em quantas horas em média?
+
+Pergunto porque lead quente esfria rápido
+— especialmente no nicho de tech/Apple,
+onde o cliente pesquisa em vários lugares
+ao mesmo tempo. Se a gente responde em
+minutos, a taxa de conversão sobe muito.
+
+Só queria entender o fluxo de vocês
+pra gente estar alinhado. 💬</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-cobrar-feedback-criativo">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pedindo feedback de criativo novo</h3>
+        <span class="when">ao subir anúncio novo</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Subi um criativo novo hoje
+com foco em <span class="ph">[abordagem, ex: prova social
+/ preço / unboxing]</span>.
+
+Dá uma olhada aqui: <span class="ph">[link do anúncio
+ou print]</span>
+
+Tá alinhado com a comunicação de vocês?
+Se tiver algo que preferem ajustar antes
+de eu escalar, me fala agora que ainda
+dá tempo.
+
+Vou acompanhar os primeiros resultados
+e te conto como tá performando em <span class="ph">[prazo,
+ex: 3 dias]</span>. 🔥</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-msg-cobrar-meta">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Revisando meta do mês com o cliente</h3>
+        <span class="when">meio do mês</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Passando a metade do mês,
+vamos fazer um check rápido.
+
+No tráfego, estamos em:
+📊 <span class="ph">[nº]</span> leads gerados até agora
+💰 R$ <span class="ph">[valor]</span> investidos
+🎯 Meta do mês: <span class="ph">[nº]</span> leads / R$ <span class="ph">[meta]</span>
+em vendas
+
+No ritmo atual, vamos <span class="ph">[bater / chegar perto
+/ precisar ajustar]</span> a meta.
+
+<span class="ph">[Se estiver bem:]</span> Tá ótimo, vou manter
+o ritmo e ir otimizando.
+
+<span class="ph">[Se precisar ajustar:]</span> Pra fechar o mês
+mais forte, estou planejando <span class="ph">[ação]</span>.
+
+Como tá o comercial de vocês nesse ritmo?
+Alguma mudança de objetivo pra esse
+segundo tempo do mês? 🎯</pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 06 PRIORIZAÇÃO -->
+  <section class="section" id="priorizacao">
+    <div class="section-head">
+      <div class="section-num">06 — Onde colocar o olho</div>
+      <h2>Priorização de contas</h2>
+      <p>Com a carteira cheia, nem toda conta merece a mesma atenção todo dia. Esta matriz decide rápido onde focar — sem depender do feeling.</p>
+    </div>
+
+    <div class="matrix-wrap" id="card-matriz-prioridade">
+      <div class="matrix-head">
+        <span class="tag">Referência</span>
+        <h3>Matriz de prioridade — verba × saúde da conta</h3>
+      </div>
+      <div class="matrix-grid">
+        <div class="m-axis-y">
+          <span>Verba alta</span>
+          <span>Verba baixa</span>
+        </div>
+        <div class="m-cell crit">
+          <div class="m-tag">🔴 Prioridade máxima</div>
+          <h4>Verba alta + saúde ruim</h4>
+          <p>Olho diário. Maior risco de churn e maior impacto financeiro se piorar. Otimize antes de fazer qualquer outra coisa no dia.</p>
+        </div>
+        <div class="m-cell watch">
+          <div class="m-tag">🟡 Vigiar de perto</div>
+          <h4>Verba alta + saúde boa</h4>
+          <p>Confere a cada 2 dias. Está performando, mas é a conta que mais dói perder — não deixe de monitorar por estar indo bem.</p>
+        </div>
+        <div class="m-cell low">
+          <div class="m-tag">🟠 Estabilizar</div>
+          <h4>Verba baixa + saúde ruim</h4>
+          <p>Revisão semanal focada. Impacto financeiro menor, mas pode virar churn silencioso se ignorado por muito tempo.</p>
+        </div>
+        <div class="m-cell auto">
+          <div class="m-tag">🟢 Piloto automático</div>
+          <h4>Verba baixa + saúde boa</h4>
+          <p>Checagem semanal no resumo de segunda já basta. Não precisa de tempo extra — só não esquecer de existir.</p>
+        </div>
+        <div class="m-axis-x"><span>Saúde ruim</span><span>Saúde boa</span></div>
+      </div>
+      <div class="matrix-foot">
+        <b>Saúde da conta</b> = CPL dentro da meta + volume estável + sem queda de CTR por 3+ dias. Se 2 desses 3 falharem, é "saúde ruim".
+      </div>
+    </div>
+
+    <div class="card" id="card-rotina-triagem">
+      <div class="card-top">
+        <span class="tag">Rotina</span>
+        <h3>Rotina de triagem semanal</h3>
+        <span class="when">toda segunda, antes do resto</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>🗂️ TRIAGEM DA SEMANA — <span class="ph">[dd/mm]</span>
+
+Antes de otimizar qualquer conta, classifique
+todas em 5 minutos:
+
+<span class="mut">───────────────────────────</span>
+🔴 PRIORIDADE MÁXIMA (verba alta + saúde ruim)
+<span class="mut">───────────────────────────</span>
+<span class="ph">[cliente 1]</span>
+<span class="ph">[cliente 2]</span>
+
+<span class="mut">───────────────────────────</span>
+🟡 VIGIAR DE PERTO (verba alta + saúde boa)
+<span class="mut">───────────────────────────</span>
+<span class="ph">[cliente 3]</span>
+<span class="ph">[cliente 4]</span>
+
+<span class="mut">───────────────────────────</span>
+🟠 ESTABILIZAR (verba baixa + saúde ruim)
+<span class="mut">───────────────────────────</span>
+<span class="ph">[cliente 5]</span>
+
+<span class="mut">───────────────────────────</span>
+🟢 PILOTO AUTOMÁTICO (verba baixa + saúde boa)
+<span class="mut">───────────────────────────</span>
+<span class="ph">[restante da carteira]</span>
+
+Regra: ataque os 🔴 primeiro, sempre.
+Os 🟢 só recebem o resumo de segunda —
+não gaste tempo de otimização neles
+a menos que mudem de quadrante.</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 SOP OTIMIZAÇÃO -->
+  <section class="section" id="sop">
+    <div class="section-head">
+      <div class="section-num">07 — Playbook técnico</div>
+      <h2>SOP de otimização</h2>
+      <p>O seu próprio roteiro de diagnóstico — não é mensagem pro cliente, é o que você checa por trás. Calibrado pra Meta Ads e o perfil do nicho Apple/tech: ticket mais alto, público mais cético, decisão de compra mais lenta.</p>
+    </div>
+
+    <div class="card" id="card-sop-diagnostico">
+      <div class="card-top">
+        <span class="tag">SOP</span>
+        <h3>Diagnóstico em 5 passos</h3>
+        <span class="when">toda conta 🔴 ou 🟡</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>🔍 DIAGNÓSTICO — <span class="ph">[Cliente]</span> · <span class="ph">[dd/mm]</span>
+
+PASSO 1 — Onde está o problema?
+[ ] CTR caiu → problema é no criativo/anúncio
+[ ] CTR ok, CPL subiu → problema é no público/leilão
+[ ] Cliques ok, conversão caiu → problema é
+    na página/funil, não na campanha
+[ ] Tudo caiu junto → checar conta inteira
+    (verba, política, conflito de público)
+
+PASSO 2 — Há quanto tempo?
+[ ] 1-2 dias → pode ser ruído, observar mais
+[ ] 3+ dias → ação necessária agora
+
+PASSO 3 — Comparar período
+CPL esta semana: R$ <span class="ph">[valor]</span>
+CPL semana anterior: R$ <span class="ph">[valor]</span>
+Variação: <span class="ph">[%]</span>
+
+PASSO 4 — Checar fadiga de criativo
+Frequência atual: <span class="ph">[nº]</span>
+   → acima de 2.5-3 no nicho Apple já é
+     sinal de cansaço (público mais restrito
+     e mais cético, satura mais rápido)
+
+PASSO 5 — Decidir ação
+[ ] Trocar criativo
+[ ] Ajustar público/posicionamento
+[ ] Revisar página de destino
+[ ] Pausar e reestruturar do zero
+[ ] Aguardar mais 48h (fase de aprendizado)
+
+Ação escolhida: <span class="ph">[descreva]</span>
+Resultado esperado até: <span class="ph">[data]</span></pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-sop-sinais">
+      <div class="card-top">
+        <span class="tag">SOP</span>
+        <h3>Sinais de alerta · nicho Apple</h3>
+        <span class="when">referência rápida</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>⚠️ SINAIS ESPECÍFICOS DO NICHO APPLE/TECH
+
+Por que esse nicho se comporta diferente:
+• Ticket médio mais alto → decisão de compra
+  mais lenta, mais pesquisa antes de converter
+• Público mais cético com anúncio de tech
+  (medo de golpe/produto falso/não original)
+• Audiência mais restrita e mais "antenada"
+  → criativo cansa mais rápido (frequência
+  alta vira ponto cego rapidamente)
+• Forte sazonalidade em lançamentos (linha
+  nova, Black Friday, datas comemorativas)
+
+Sinais de que algo vai precisar de ação:
+
+🚩 CTR caindo com frequência acima de 2.5
+   → criativo saturou, público já viu demais
+
+🚩 Muito clique, pouca conversão
+   → prova social fraca ou falta de garantia
+   visível (nota fiscal, garantia, originalidade)
+   no criativo ou na página
+
+🚩 CPL bom mas qualidade de lead caindo
+   → público pode estar atraindo curioso,
+   não comprador — revisar segmentação
+
+🚩 Pico de custo nos dias antes de lançamento
+   de produto novo Apple → concorrência de
+   leilão sobe, é esperado, não é erro seu
+
+🚩 Comentários pedindo "é original?" ou
+   "é loja física?" → sinal de ceticismo,
+   considerar reforçar prova social no
+   próprio criativo</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-sop-criativo">
+      <div class="card-top">
+        <span class="tag">SOP</span>
+        <h3>Quando trocar criativo</h3>
+        <span class="when">checklist de decisão</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>🎨 TROCAR CRIATIVO — checklist de decisão
+
+Troque se 2 ou mais forem verdade:
+[ ] Frequência acima de 2.5-3
+[ ] CTR caiu mais de 30% vs. primeira semana
+[ ] Mais de 14 dias rodando sem pausa
+[ ] Comentários repetitivos/negativos
+    acumulando
+
+Antes de trocar, teste primeiro (mais barato
+que criar do zero):
+1. Trocar só a legenda/copy
+2. Trocar só a thumbnail/capa do vídeo
+3. Testar novo gancho nos 3s iniciais
+4. Só then: produzir criativo novo
+
+Pro nicho Apple, criativos que costumam
+performar melhor:
+• Prova de originalidade (nota fiscal,
+  selo, unboxing real)
+• Comparação de preço (visual, não só texto)
+• Depoimento de cliente real com produto
+• Mostrar o produto físico, não só render</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-sop-publico">
+      <div class="card-top">
+        <span class="tag">SOP</span>
+        <h3>Quando ajustar público</h3>
+        <span class="when">checklist de decisão</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>🎯 AJUSTAR PÚBLICO — checklist de decisão
+
+Sinais de que o público precisa de ajuste:
+[ ] CTR bom, mas CPL subindo (leilão mais
+    caro = audiência saturando)
+[ ] Conversão de baixa qualidade (muito
+    curioso, pouco comprador real)
+[ ] Mesma campanha há 20+ dias sem expandir
+    nem testar novo público
+
+Ordem de teste recomendada:
+1. Expandir levemente o raio geográfico
+2. Testar público semelhante (lookalike)
+   a partir da base de clientes/pixel
+3. Testar interesse adjacente (quem segue
+   review de tech, não só "Apple" literal)
+4. Revisar exclusões (já comprou recente,
+   funcionário, etc.)
+
+Cuidado no nicho Apple: público muito amplo
+("interesse em tecnologia") atrai curioso
+demais. Público muito estreito ("só iPhone
+15 Pro Max") satura rápido. O ponto ideal
+geralmente fica no meio — intenção de
+compra + categoria, não modelo específico.</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-sop-escala">
+      <div class="card-top">
+        <span class="tag">SOP</span>
+        <h3>Quando escalar verba</h3>
+        <span class="when">checklist de decisão</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>📈 ESCALAR VERBA — checklist de decisão
+
+Só escale se TODOS forem verdade:
+[ ] CPL estável (ou caindo) por 7+ dias
+[ ] Conversão de qualidade confirmada
+    (não só volume, mas lead bom)
+[ ] Campanha já passou da fase de
+    aprendizado (50 conversões acumuladas)
+[ ] Cliente tem estoque/capacidade de
+    atender o volume extra
+
+Como escalar (evite duplicar o aumento):
+• Aumente em incrementos de 15-20% a cada
+  3-4 dias, não tudo de uma vez
+• Aumento brusco reinicia o aprendizado
+  do algoritmo — perde eficiência por
+  alguns dias
+
+No nicho Apple, atenção especial em:
+• Período pré-lançamento de produto novo
+  → segure escala, leilão vai subir sozinho
+• Pós-lançamento (1-2 semanas depois)
+  → ótima janela pra escalar, demanda
+  reprimida ainda alta, leilão normaliza</pre>
+      </div>
+    </div>
+
+    <div class="card" id="card-sop-log">
+      <div class="card-top">
+        <span class="tag">SOP</span>
+        <h3>Log de otimização</h3>
+        <span class="when">toda vez que mexer</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>📒 LOG DE OTIMIZAÇÃO — <span class="ph">[Cliente]</span>
+
+Data: <span class="ph">[dd/mm]</span>
+O que estava acontecendo: <span class="ph">[sintoma
+observado, ex: CPL subiu 40%]</span>
+
+O que eu mudei: <span class="ph">[ação tomada]</span>
+Por quê: <span class="ph">[hipótese/diagnóstico]</span>
+
+Resultado esperado: <span class="ph">[métrica + prazo]</span>
+Resultado real (preencher depois): <span class="ph">[o que
+de fato aconteceu]</span>
+
+Funcionou? <span class="ph">[sim/não/parcial]</span>
+Vale repetir esse tipo de ajuste em
+contas parecidas? <span class="ph">[sim/não + por quê]</span>
+
+<span class="mut">— Manter um log por conta cria seu próprio
+histórico de "o que funciona nesse nicho",
+em vez de reaprender do zero toda vez. —</span></pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 08 NICHO APPLE -->
+  <section class="section" id="nicho-apple">
+    <div class="section-head">
+      <div class="section-num">08 — Nicho Apple</div>
+      <h2>Nicho Apple 🍎</h2>
+      <p>Relatórios, mensagens e cobranças feitos especificamente para clientes que vendem produtos Apple — iPhone, MacBook, iPad, acessórios. Métricas de unidades vendidas, ticket médio e sazonalidade de lançamento já incluídas.</p>
+    </div>
+
+    <div class="subhead">Relatórios</div>
+
+    <div class="card" id="apple-relatorio-mensal">
+      <div class="card-top">
+        <span class="tag">Relatório</span>
+        <h3>Relatório mensal Apple</h3>
+        <span class="when">1× / mês</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>📊 RELATÓRIO MENSAL — <span class="ph">[NOME DO CLIENTE]</span>
+Período: <span class="ph">[01/MÊS]</span> a <span class="ph">[30/MÊS]</span>
+Responsável: <span class="ph">[SEU NOME]</span> · Zenith
+
+<span class="mut">───────────────────────────</span>
+1. RESUMO EXECUTIVO
+<span class="mut">───────────────────────────</span>
+<span class="ph">[Ex: investimos R$X, geramos Y conversas
+qualificadas e a loja vendeu Z unidades
+com ticket médio de R$W.]</span>
+
+<span class="mut">───────────────────────────</span>
+2. NÚMEROS DE TRÁFEGO
+<span class="mut">───────────────────────────</span>
+• Investimento total ...... R$ <span class="ph">[valor]</span>
+• Mensagens/leads gerados . <span class="ph">[nº]</span>
+• Custo por conversa ...... R$ <span class="ph">[valor]</span>
+• Alcance ................. <span class="ph">[nº]</span>
+• Cliques no link ......... <span class="ph">[nº]</span>
+• CTR ..................... <span class="ph">[%]</span>
+• Frequência média ........ <span class="ph">[nº]</span>
+
+<span class="mut">───────────────────────────</span>
+3. NÚMEROS COMERCIAIS
+<span class="mut">───────────────────────────</span>
+• Conversas iniciadas ..... <span class="ph">[nº]</span>
+• Propostas enviadas ....... <span class="ph">[nº]</span>
+• Vendas fechadas ......... <span class="ph">[nº]</span>
+• Taxa de conversão ........ <span class="ph">[%]</span>
+• Ticket médio ............. R$ <span class="ph">[valor]</span>
+• Faturamento atribuído .... R$ <span class="ph">[valor]</span>
+• ROAS ..................... <span class="ph">[Nx]</span>
+
+<span class="mut">───────────────────────────</span>
+4. PRODUTOS MAIS VENDIDOS
+<span class="mut">───────────────────────────</span>
+🥇 <span class="ph">[iPhone XX / MacBook / iPad]</span> — <span class="ph">[nº]</span> un.
+🥈 <span class="ph">[produto 2]</span> — <span class="ph">[nº]</span> un.
+🥉 <span class="ph">[produto 3]</span> — <span class="ph">[nº]</span> un.
+
+<span class="mut">───────────────────────────</span>
+5. COMPARATIVO COM MÊS ANTERIOR
+<span class="mut">───────────────────────────</span>
+• Custo por conversa: <span class="ph">[antes]</span> → <span class="ph">[agora]</span> (<span class="ph">[↑/↓%]</span>)
+• Vendas: <span class="ph">[antes]</span> → <span class="ph">[agora]</span> (<span class="ph">[↑/↓%]</span>)
+• Leitura: <span class="ph">[o que explica essa variação]</span>
+
+<span class="mut">───────────────────────────</span>
+6. O QUE DEU CERTO
+<span class="mut">───────────────────────────</span>
+✅ <span class="ph">[criativo / produto / público que bombou]</span>
+✅ <span class="ph">[ex: anúncio de unboxing iPhone > lead x2]</span>
+
+<span class="mut">───────────────────────────</span>
+7. O QUE AJUSTAMOS
+<span class="mut">───────────────────────────</span>
+🔧 <span class="ph">[problema + ação tomada]</span>
+
+<span class="mut">───────────────────────────</span>
+8. PLANO PARA O PRÓXIMO MÊS
+<span class="mut">───────────────────────────</span>
+→ <span class="ph">[prioridade 1 — ex: lançamento iPhone XX]</span>
+→ <span class="ph">[prioridade 2]</span>
+→ <span class="ph">[teste planejado]</span>
+
+Qualquer dúvida, estou à disposição. 🚀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="apple-relatorio-semanal">
+      <div class="card-top">
+        <span class="tag">Relatório</span>
+        <h3>Relatório semanal Apple</h3>
+        <span class="when">toda segunda</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>📱 SEMANA EM NÚMEROS — <span class="ph">[Cliente]</span>
+<span class="ph">[dd/mm]</span> a <span class="ph">[dd/mm]</span>
+
+💰 Investido: R$ <span class="ph">[valor]</span>
+💬 Conversas geradas: <span class="ph">[nº]</span>
+📦 Vendas fechadas: <span class="ph">[nº]</span> unidades
+🎯 Custo por conversa: R$ <span class="ph">[valor]</span>
+📈 vs. semana anterior: <span class="ph">[↑/↓% + leitura]</span>
+
+Produto destaque da semana:
+<span class="ph">[iPhone / MacBook / iPad / acessório]</span>
+→ <span class="ph">[por que performou — ex: criativo com
+   unboxing gerou 3x mais conversa]</span>
+
+Foco desta semana: <span class="ph">[ação principal]</span></pre>
+      </div>
+    </div>
+
+    <div class="subhead">Mensagens de rotina</div>
+
+    <div class="card" id="apple-checkin">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Check-in de segunda · nicho Apple</h3>
+        <span class="when">toda segunda</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Bom dia, <span class="ph">[Nome]</span>! ☀️ Semana começando.
+
+Semana passada geramos <span class="ph">[nº]</span> conversas
+qualificadas com custo de R$ <span class="ph">[valor]</span>
+cada — <span class="ph">[melhor/estável/em ajuste]</span>.
+
+Vocês conseguiram fechar <span class="ph">[nº]</span> vendas
+com esses leads? Fico esperando o retorno
+pra calibrar mais os criativos.
+
+Essa semana o foco é <span class="ph">[ação — ex: criar
+anúncio pro MacBook Air novo]</span>. 🚀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="apple-pulso-quarta">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pulso de quarta · nicho Apple</h3>
+        <span class="when">quarta</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, pulso rápido de quarta 👀
+
+Campanha de <span class="ph">[iPhone / MacBook / iPad]</span>
+tá <span class="ph">[voando / estável / sendo ajustada]</span>.
+
+<span class="ph">[Se bem:]</span> Custo por conversa caiu pra
+R$ <span class="ph">[valor]</span> — vou deixar rodar e ir
+acompanhando o volume.
+
+<span class="ph">[Se ajustando:]</span> Subi um criativo novo
+com <span class="ph">[abordagem — ex: foco em garantia/
+originalidade/preço parcelado]</span> pra ver
+se melhora o engajamento.
+
+Sexta te trago o panorama completo. 🙌</pre>
+      </div>
+    </div>
+
+    <div class="card" id="apple-destaque-sexta">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Destaque positivo de sexta · nicho Apple</h3>
+        <span class="when">sexta</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Sextou, <span class="ph">[Nome]</span>! 🎉
+
+Boa notícia pra fechar a semana:
+<span class="ph">[ex: a campanha do iPhone gerou 28
+conversas com custo de R$18 cada —
+melhor semana do mês até agora]</span>.
+
+<span class="ph">[Se houve venda confirmada:]</span>
+Vocês fecharam <span class="ph">[nº]</span> vendas essa semana
+com esses leads?
+
+Semana que vem continuo no mesmo ritmo
++ <span class="ph">[próxima ação planejada]</span>.
+Bom fim de semana! 😄</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Cobrança e resultado</div>
+
+    <div class="card" id="apple-cobrar-lead">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Cobrando qualidade de lead · nicho Apple</h3>
+        <span class="when">1-2× / semana</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! As conversas continuam
+chegando por aqui 📲
+
+Pra eu afinar o público e trazer pessoas
+mais prontas pra comprar, me conta:
+
+Das mensagens que receberam essa semana:
+→ Quantas perguntaram sobre
+   <span class="ph">[iPhone / MacBook / iPad]</span> especificamente?
+→ Alguém perguntou sobre parcelamento /
+   condição de pagamento? (sinal de intenção)
+→ Quantas viraram venda?
+
+Esses detalhes me ajudam a distinguir
+o curioso do comprador real — e aí
+consigo ajustar o criativo e o público
+pra atrair mais do segundo. 🎯</pre>
+      </div>
+    </div>
+
+    <div class="card" id="apple-cobrar-estoque">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Alerta de produto / estoque</h3>
+        <span class="when">ao notar demanda alta</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Aviso importante 📦
+
+A campanha de <span class="ph">[produto — ex: iPhone 15
+Pro 256GB]</span> tá gerando bastante conversa
+— <span class="ph">[nº]</span> mensagens nos últimos <span class="ph">[X]</span> dias.
+
+Antes de eu escalar o investimento, vocês
+têm estoque suficiente pra atender esse
+volume? Não quero gerar demanda que a
+loja não consiga suprir.
+
+Se tiver tudo certo, já escalo a verba
+dessa campanha. Se preferir redirecionar
+pro <span class="ph">[produto alternativo com estoque]</span>, me
+fala que faço a troca agora. 🚀</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Sazonalidade e oportunidades</div>
+
+    <div class="card" id="apple-lancamento">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Mensagem de lançamento Apple</h3>
+        <span class="when">evento Apple / iPhone novo</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! A Apple acabou de anunciar
+o <span class="ph">[produto — ex: iPhone 16 / MacBook
+M4]</span> — e isso é oportunidade de ouro
+pra gente. 🍎
+
+O que costuma acontecer agora:
+1. Público começa a pesquisar muito
+2. Quem quer o novo vende o modelo atual
+3. Demanda por modelos anteriores sobe
+4. Leilão do Meta fica mais caro por
+   ~2 semanas e depois normaliza
+
+Minha sugestão: <span class="ph">[ex: vamos antecipar
+criativos pros modelos que vocês têm
+em estoque e surfar a onda de busca
+antes que o CPM suba]</span>.
+
+Vocês têm <span class="ph">[modelo atual]</span> em estoque?
+Quanto? Assim já planejo a campanha. 📲</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Pós-venda e situações</div>
+
+    <div class="card" id="apple-pos-venda">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pós-venda / campanha de fidelização</h3>
+        <span class="when">após lote de vendas</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Uma ideia rápida 💡
+
+Vocês fecharam <span class="ph">[nº]</span> vendas esse mês —
+esses clientes são ouro pra gente usar
+em campanha de remarketing e prova social.
+
+Conseguem:
+1. Pedir um depoimento rápido (áudio/foto
+   com o produto) pra usar como criativo?
+   → Anúncio com cliente real converte
+     muito mais no nicho Apple, porque
+     quebra a desconfiança de golpe/fake
+
+2. Montar uma lista de remarketing com
+   quem comprou pra oferecer acessórios
+   compatíveis?
+
+Com isso consigo reduzir seu CPL e
+aumentar o LTV de cada cliente. Topa? 🚀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="apple-resultado-abaixo">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Resultado abaixo do esperado · nicho Apple</h3>
+        <span class="when">transparência</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>, te trago um panorama honesto 🤝
+
+Essa semana o custo por conversa subiu
+pra R$ <span class="ph">[valor]</span> — acima do que a gente
+busca. O motivo mais provável:
+
+<span class="ph">[escolha um:]</span>
+• Criativo saturou — frequência chegou em
+  <span class="ph">[nº]</span> e o público já viu demais
+• Concorrência de leilão subiu (comum
+  perto de lançamento Apple ou datas como
+  Black Friday)
+• Público atingiu o teto de alcance —
+  precisamos expandir ou testar novo segmento
+
+O que já estou fazendo:
+→ <span class="ph">[ação 1 — ex: subindo criativo novo
+   com foco em prova social]</span>
+→ <span class="ph">[ação 2]</span>
+
+Espero normalizar até <span class="ph">[prazo]</span>.
+Qualquer resultado relevante te aviso
+antes disso. 💪</pre>
+      </div>
+    </div>
+
+    <div class="card" id="apple-escala-verba">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pedido de escala de verba · nicho Apple</h3>
+        <span class="when">quando a conta pede</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Oi <span class="ph">[Nome]</span>! Boa notícia 📈
+
+A campanha de <span class="ph">[produto]</span> tá com custo
+por conversa em R$ <span class="ph">[valor]</span> — <span class="ph">[X]</span>% abaixo
+da meta — e ainda tem espaço pra crescer
+sem perder eficiência.
+
+Estamos limitados pela verba atual de
+R$ <span class="ph">[valor]</span>/dia. Se aumentarmos pra
+R$ <span class="ph">[valor sugerido]</span>/dia, a projeção
+é de <span class="ph">[+X]</span> conversas extras por semana
+mantendo o custo atual.
+
+Antes de escalar, confirma:
+→ Vocês têm estoque de <span class="ph">[produto]</span>
+   pra atender o volume extra?
+→ O time consegue responder mais
+   conversas sem perder agilidade?
+
+Se tudo certo, já ajusto amanhã. 🚀</pre>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- 09 MEU ESTILO -->
+  <section class="section" id="meu-estilo">
+    <div class="section-head">
+      <div class="section-num">09 — No seu tom</div>
+      <h2>Meu estilo 🗣️</h2>
+      <p>Mensagens no jeito que você fala de verdade — direto, sem firula, explicando o raciocínio, cobrando resultado de forma leve. Preencha os campos e manda do jeito que é.</p>
+    </div>
+
+    <div class="subhead">Rotina semanal</div>
+
+    <div class="card" id="estilo-checkin">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Check-in direto de segunda</h3>
+        <span class="when">toda segunda</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Bom dia, <span class="ph">[Nome]</span>! Começando a semana
+por aqui 🤙
+
+Vou passar um resumo rápido da semana
+passada com os nossos resultados:
+
+<span class="ph">[nº]</span> leads chegaram nos últimos 7 dias,
+R$ <span class="ph">[valor]</span> investidos, custo de R$ <span class="ph">[valor]</span>
+por lead.
+
+Dos <span class="ph">[nº]</span> leads que chegaram, quantos
+fechamos?</pre>
+      </div>
+    </div>
+
+    <div class="card" id="estilo-resultado-semana">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Passando resultado da semana</h3>
+        <span class="when">segunda ou sexta</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Irmão(ã)! Semana boa por aqui 📈
+
+Nas últimas semanas tivemos um aumento
+bem grande em <span class="ph">[métrica — ex: volume de
+leads / alcance / conversas]</span> — <span class="ph">[nº]</span>
+<span class="ph">[leads/conversas]</span> com custo de R$ <span class="ph">[valor]</span>.
+
+<span class="ph">[Se houve algo específico bom:]</span>
+A campanha de <span class="ph">[produto/serviço]</span> foi a
+que mais performou — já to deixando
+ela rodar mais forte.
+
+Como tá o comercial de vocês? Fecharam
+algo nessa leva? 🎯</pre>
+      </div>
+    </div>
+
+    <div class="card" id="estilo-pulso">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pulso no meio da semana</h3>
+        <span class="when">quarta</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre><span class="ph">[Nome]</span>! Passando aqui no meio da semana 👀
+
+Tá rodando bem — <span class="ph">[nº]</span> leads já nessa
+semana, custo estável em R$ <span class="ph">[valor]</span>.
+
+Fiz um ajuste em <span class="ph">[criativo/público/verba]</span>
+hoje que deve melhorar ainda mais.
+Sexta te conto como ficou 🤙</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Cobrança de resultado</div>
+
+    <div class="card" id="estilo-cobrar-fechamento">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Cobrando quantos fecharam</h3>
+        <span class="when">1-2× / semana</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Irmão(ã), pra eu continuar afinando o
+público e melhorar a qualidade, me conta:
+
+Dos leads que chegaram essa semana,
+quantos eram bom perfil? Fecharam algum?
+
+Esse feedback faz muita diferença —
+com isso consigo ajustar o público
+e trazer leads mais quentes pra vocês 🎯</pre>
+      </div>
+    </div>
+
+    <div class="card" id="estilo-meta-do-mes">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Revisando meta do mês</h3>
+        <span class="when">meio do mês</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre><span class="ph">[Nome]</span>, passamos da metade do mês.
+Check rápido 👀
+
+Tráfego: <span class="ph">[nº]</span> leads, R$ <span class="ph">[valor]</span> investidos,
+custo de R$ <span class="ph">[valor]</span> cada.
+
+No ritmo atual a gente vai <span class="ph">[bater / chegar
+perto de / precisar forçar]</span> a meta.
+
+<span class="ph">[Se bom:]</span> Tô deixando rodar, tá redondo.
+
+<span class="ph">[Se precisar ajustar:]</span> Vou <span class="ph">[ação]</span> essa semana
+pra tentar empurrar o número.
+
+Como tá o comercial de vocês nesse
+segundo tempo? Mudou alguma prioridade? 🤙</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Explicando e agregando valor</div>
+
+    <div class="card" id="estilo-explicar-estrategia">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Explicando a estratégia por trás</h3>
+        <span class="when">quando o cliente questionar</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Boa pergunta, deixa eu te explicar o
+raciocínio por trás disso 👇
+
+Esse anúncio de <span class="ph">[descrição]</span> é um anúncio
+<span class="ph">[ex: genérico / de topo de funil / de
+remarketing]</span> — o objetivo não é converter
+direto, é <span class="ph">[ex: levar leads com interesse
+geral até o WhatsApp pra a gente converter
+com o que temos disponível]</span>.
+
+O lead não chega com uma oferta específica
+— ele chega com interesse, e o comercial
+de vocês converte a partir daí.
+
+Faz sentido? Se quiser a gente pode
+ajustar a abordagem — me conta o que
+sentiu de diferença nos atendimentos. 🤙</pre>
+      </div>
+    </div>
+
+    <div class="card" id="estilo-agregar-insight">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Insight que agrega valor</h3>
+        <span class="when">quando observar algo relevante</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Irmão(ã), uma coisa que notei aqui
+que pode ajudar vocês 💡
+
+Nas últimas semanas tivemos um aumento
+bem grande na quantidade de <span class="ph">[seguidores /
+reativação do público / conversas]</span> —
+mas tô sentindo que <span class="ph">[gargalo observado,
+ex: a velocidade de resposta / o follow-up
+dos leads]</span> pode estar deixando resultado
+na mesa.
+
+Não é crítica — é porque quero que o
+resultado de vocês seja o melhor possível.
+Conseguimos conversar sobre isso essa
+semana? 🙏</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Ajustes e operacional</div>
+
+    <div class="card" id="estilo-ajuste-criativo">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Avisando ajuste de criativo</h3>
+        <span class="when">ao mudar anúncio</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre><span class="ph">[Nome]</span>! Fiz uma mudança aqui que preciso
+te contar 🔧
+
+O criativo antigo de <span class="ph">[descrição]</span> tava
+começando a saturar — frequência subindo,
+CTR caindo. Pausei ele e subi um novo
+com foco em <span class="ph">[nova abordagem]</span>.
+
+Podemos alterar a imagem dessa campanha
+também se você achar melhor — me fala
+o que achar.
+
+Vou acompanhar os primeiros dias e já
+te conto como ficou 👀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="estilo-problema-resolvido">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Problema identificado e resolvido</h3>
+        <span class="when">ao resolver algo</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre><span class="ph">[Nome]</span>, verificando aqui 🔍
+
+Sobre <span class="ph">[o que o cliente relatou]</span>:
+<span class="ph">[ex: essa copy inicial não existe —
+ela é automática do Meta, é mensagem
+padrão quando alguém clica no anúncio
+de perfil que tava redirecionando pro
+direct também]</span>.
+
+Ela apareceu somente nesse anúncio
+específico — já foi resolvido ✅
+
+Se aparecer de novo, me manda que
+verifico na hora 🤙</pre>
+      </div>
+    </div>
+
+    <div class="subhead">Relatório e reunião</div>
+
+    <div class="card" id="estilo-relatorio-mensal">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Enviando relatório mensal no seu tom</h3>
+        <span class="when">início do mês</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre><span class="ph">[Nome]</span>! Fechamento de <span class="ph">[mês]</span> aqui 📊
+
+Manda o relatório já na sequência.
+Destaque do mês: <span class="ph">[1 linha com a melhor
+conquista — ex: geramos 163 leads com
+custo 22% abaixo do mês anterior]</span>.
+
+Dos <span class="ph">[nº]</span> leads que vieram, quantos
+o comercial de vocês converteu?
+
+Pergunto porque isso muda a leitura
+do mês inteiro — e quero entender se
+a gente tá gerando volume bom ou se
+precisa afinar a qualidade.
+
+Quando puder, me conta 🤙</pre>
+      </div>
+    </div>
+
+    <div class="card" id="estilo-depoimento">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pedindo depoimento em vídeo</h3>
+        <span class="when">cliente satisfeito</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Estou produzindo alguns conteúdos pra
+Zenith e queria te fazer um pedido 🙏
+
+Se puder, grava um vídeo simples de
+30 a 60 segundos respondendo:
+
+• Quem você é e qual sua empresa
+• Como estava a empresa antes da Zenith
+• O que te fez contratar a gente
+• O que mudou depois do nosso trabalho
+• Se recomendaria a Zenith pra outras
+  empresas
+
+Não precisa ser nada profissional,
+pode gravar pelo celular mesmo 📱
+
+Vai me ajudar muito a mostrar o trabalho
+que estamos construindo juntos 🚀</pre>
+      </div>
+    </div>
+
+    <div class="card" id="estilo-reuniao">
+      <div class="card-top">
+        <span class="tag outline">WhatsApp</span>
+        <h3>Pedindo reunião de alinhamento</h3>
+        <span class="when">quando precisar conversar</span>
+      </div>
+      <div class="card-body">
+        <button class="copy-btn" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span>Copiar</span></button>
+<pre>Irmão(ã), queria alinhar algumas coisas
+com você essa semana.
+
+Tô sentindo um pouco de falta de feedback
+do seu lado — não é cobrança, mas com
+mais retorno do comercial eu consigo
+otimizar muito melhor as campanhas.
+
+Quando puder marcarmos uma reunião
+essa semana? 15-20 min já resolvem.
+Pode ser call, presencial, o que ficar
+melhor pra você 🤙</pre>
       </div>
     </div>
 
